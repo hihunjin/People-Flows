@@ -12,6 +12,7 @@ import cv2
 from matplotlib import cm
 
 from torchvision import transforms
+from tqdm import tqdm
 
 
 def plotDensity(density,plot_path):
@@ -43,6 +44,7 @@ test_json_path = './test.json'
 
 # the folder to output density map and flow maps
 output_folder = './plot'
+os.makedirs(output_folder,exist_ok=True)
 
 with open(test_json_path, 'r') as outfile:
     img_paths = json.load(outfile)
@@ -62,7 +64,7 @@ model.eval()
 pred= []
 gt = []
 
-for i in range(len(img_paths)):
+for i in tqdm(range(len(img_paths))):
     img_path = img_paths[i]
 
     img_folder = os.path.dirname(img_path)

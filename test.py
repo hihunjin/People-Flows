@@ -11,6 +11,7 @@ import torch
 from torch.autograd import Variable
 import torch.nn.functional as F
 import cv2
+from tqdm import tqdm
 
 from torchvision import transforms
 
@@ -43,7 +44,7 @@ model.eval()
 pred= []
 gt = []
 
-for i in range(len(img_paths)):
+for i in tqdm(range(len(img_paths))):
     img_path = img_paths[i]
 
     img_folder = os.path.dirname(img_path)

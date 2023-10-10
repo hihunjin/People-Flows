@@ -1,4 +1,4 @@
-import  h5py
+import h5py
 import PIL.Image as Image
 import numpy as np
 import os
@@ -10,11 +10,15 @@ from image import *
 
 #set the root to the path of FDST dataset you download
 root = ''
+add_train = False
 
 #now generate the FDST's ground truth
-train_folder = os.path.join(root,'train_data')
+if add_train:
+    train_folder = os.path.join(root,'train_data')
 test_folder = os.path.join(root,'test_data')
-path_sets = [os.path.join(train_folder,f) for f in os.listdir(train_folder) if os.path.isdir(os.path.join(train_folder,f))]+[os.path.join(test_folder,f) for f in os.listdir(test_folder) if os.path.isdir(os.path.join(test_folder,f))]
+path_sets = [os.path.join(test_folder,f) for f in os.listdir(test_folder) if os.path.isdir(os.path.join(test_folder,f))]
+if add_train:
+    path_sets += [os.path.join(train_folder,f) for f in os.listdir(train_folder) if os.path.isdir(os.path.join(train_folder,f))]
 
 img_paths = []
 for path in path_sets:
@@ -27,7 +31,7 @@ for img_path in img_paths:
     with open (gt_path,'r') as f:
         gt = json.load(f)
 
-    anno_list = gt.values()[0]['regions']
+    anno_list = list(gt.values())[0]['regions']
     img= plt.imread(img_path)
     k = np.zeros((360,640))
     rate_h = img.shape[0]/360.0
