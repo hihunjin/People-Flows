@@ -51,21 +51,29 @@ def main():
             save_with_imageio(video_path, imgs)
         
         gt_imgs = collect_pred_with_view("gt", video_num)
-        gt_video_path = f"{_streamlit}/gt_{video_num}.mp4"
-        if not os.path.exists(gt_video_path):
-            save_with_imageio(gt_video_path, gt_imgs)
+        if len(gt_imgs) > 0:
+            gt_video_path = f"{_streamlit}/gt_{video_num}.mp4"
+            if not os.path.exists(gt_video_path):
+                save_with_imageio(gt_video_path, gt_imgs)
 
         view_imgs = collect_pred_with_view(view, video_num)
-        view_video_path = f"{_streamlit}/{view}_{video_num}.mp4"
-        if not os.path.exists(view_video_path):
-            save_with_imageio(view_video_path, view_imgs)
+        if len(view_imgs) > 0:
+            view_video_path = f"{_streamlit}/{view}_{video_num}.mp4"
+            if not os.path.exists(view_video_path):
+                save_with_imageio(view_video_path, view_imgs)
         
         st.text("video")
         st.video(video_path, format="video/mp4")
-        st.text("gt")
-        st.video(gt_video_path, format="video/mp4")
-        st.text("pred")
-        st.video(view_video_path, format="video/mp4")
+        if len(gt_imgs) > 0:
+            st.text("gt")
+            st.video(gt_video_path, format="video/mp4")
+        else:
+            st.text("no gt")
+        if len(view_imgs) > 0:
+            st.text("pred")
+            st.video(view_video_path, format="video/mp4")
+        else:
+            st.text("no pred")
 
         if video_num == "4":
             st.text("4번 비디오에서는, 2명의 겹치는 사람은 구분을 못하는듯.")
